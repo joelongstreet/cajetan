@@ -16,6 +16,7 @@ CREATE TABLE elo (
 
 CREATE TABLE matchup (
   id SERIAL PRIMARY KEY,
+  start_time TIMESTAMP NOT NULL,
   team_a_id INTEGER REFERENCES team,
   team_b_id INTEGER REFERENCES team,
   team_a_score INTEGER NOT NULL,
