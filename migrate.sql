@@ -4,7 +4,8 @@ CREATE TABLE team (
   id SERIAL PRIMARY KEY,
   moniker VARCHAR(255),
   location VARCHAR(255),
-  league league
+  league league,
+  UNIQUE(moniker, location, league)
 );
 
 CREATE TABLE elo (
