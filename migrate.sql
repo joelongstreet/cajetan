@@ -12,7 +12,8 @@ CREATE TABLE elo (
   id SERIAL PRIMARY KEY,
   team_id INTEGER REFERENCES team,
   as_of TIMESTAMP NOT NULL,
-  elo INT NOT NULL
+  elo INT NOT NULL,
+  UNIQUE(team_id, as_of, elo)
 );
 
 CREATE TABLE matchup (
@@ -24,7 +25,9 @@ CREATE TABLE matchup (
   team_b_score INTEGER NOT NULL,
   team_a_is_home BOOLEAN,
   team_b_is_home BOOLEAN,
-  recap_link VARCHAR(255)
+  odds_link VARCHAR(255),
+  recap_link VARCHAR(255),
+  UNIQUE(start_time, team_a_id, team_b_id)
 );
 
 CREATE TABLE odds (
@@ -35,10 +38,12 @@ CREATE TABLE odds (
   team_b_moneyline SMALLINT,
   team_a_points SMALLINT,
   team_b_points SMALLINT,
-  over_under SMALLINT
+  over_under SMALLINT,
+  UNIQUE(as_of, matchup_id)
 );
 
 CREATE TABLE team_search_term (
   team_id INTEGER REFERENCES team,
-  term VARCHAR(255)
+  term VARCHAR(255),
+  UNIQUE(team_id, term)
 );
