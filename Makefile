@@ -1,6 +1,3 @@
-MIGRATION_FILE=migrate.sql
-MIGRATION_TASKS=`cat $(MIGRATION_FILE)`
-
 migrate:
 	docker exec -i longshot psql -U postgres -e < migrate.sql
 
@@ -14,3 +11,7 @@ start:
 stop:
 	docker-compose down
 
+reset:
+	docker kill $$(docker ps -f name=longshot -q)
+	docker rm $$(docker ps -a -f name=longshot -q)
+	docker volume rm longshot_longshot
