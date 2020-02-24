@@ -33,7 +33,7 @@ CREATE TABLE matchup (
 CREATE TABLE odds (
   id SERIAL PRIMARY KEY,
   as_of TIMESTAMP NOT NULL,
-  matchup_id INTEGER REFERENCES matchup,
+  matchup_id INTEGER REFERENCES matchup ON DELETE CASCADE,
   team_a_moneyline SMALLINT,
   team_b_moneyline SMALLINT,
   team_a_points SMALLINT,
