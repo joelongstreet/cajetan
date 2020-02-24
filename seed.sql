@@ -134,6 +134,7 @@ INSERT INTO team_search_term (team_id, term) SELECT id, 'CLE'             FROM t
 INSERT INTO team_search_term (team_id, term) SELECT id, 'TAM'             FROM team WHERE moniker = 'Buccaneers'      AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'ARI'             FROM team WHERE moniker = 'Cardinals'       AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'LAC'             FROM team WHERE moniker = 'Chargers'        AND league = 'NFL' LIMIT 1;
+INSERT INTO team_search_term (team_id, term) SELECT id, 'SDG'             FROM team WHERE moniker = 'Chargers'        AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'KAN'             FROM team WHERE moniker = 'Chiefs'          AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'IND'             FROM team WHERE moniker = 'Colts'           AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'DAL'             FROM team WHERE moniker = 'Cowboys'         AND league = 'NFL' LIMIT 1;
@@ -148,6 +149,8 @@ INSERT INTO team_search_term (team_id, term) SELECT id, 'GNB'             FROM t
 INSERT INTO team_search_term (team_id, term) SELECT id, 'CAR'             FROM team WHERE moniker = 'Panthers'        AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'NWE'             FROM team WHERE moniker = 'Patriots'        AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'OAK'             FROM team WHERE moniker = 'Raiders'         AND league = 'NFL' LIMIT 1;
+INSERT INTO team_search_term (team_id, term) SELECT id, 'STL'             FROM team WHERE moniker = 'Rams'            AND league = 'NFL' LIMIT 1;
+INSERT INTO team_search_term (team_id, term) SELECT id, 'LA'              FROM team WHERE moniker = 'Rams'            AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'LAR'             FROM team WHERE moniker = 'Rams'            AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'BAL'             FROM team WHERE moniker = 'Ravens'          AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'WAS'             FROM team WHERE moniker = 'Redskins'        AND league = 'NFL' LIMIT 1;
