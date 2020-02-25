@@ -4,6 +4,7 @@ init:
 	docker exec -i longshot psql -U postgres -e < migrate.sql
 	docker exec -i longshot psql -U postgres -e < seed.sql
 	node lib/tasks/seed-matchups
+	node lib/tasks/seed-matchups-times
 	node lib/tasks/seed-odds
 
 start:
