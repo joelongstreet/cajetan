@@ -18,6 +18,7 @@
   "homepage": "https://github.com/joelongstreet/cajetan#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "csv-parse": "^4.8.6",
     "luxon": "^1.22.0",
     "pg": "^7.18.1",
     "request": "^2.88.2",

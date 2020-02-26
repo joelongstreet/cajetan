@@ -5,6 +5,7 @@ init:
 	docker exec -i cajetan psql -U postgres -e < seed.sql
 	node lib/tasks/seed-matchups
 	node lib/tasks/seed-matchups-times
+	node lib/tasks/seed-elo
 	node lib/tasks/seed-odds
 
 start:
