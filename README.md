@@ -1,7 +1,5 @@
-# Longshot
+# Cajetan
 Predictive analytics for professional American sports
 
 ## Getting Started
-* `make start` - pull the docker image and start the database container
-* `make migrate` - build the database tables
-* `make seed` - seed the database
+* `make init`: Installs dependencies. Migrates and seeds the database.

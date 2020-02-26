@@ -2,12 +2,12 @@ version: "3"
 services:
   db:
     image: "postgres:11"
-    container_name: "longshot"
+    container_name: "cajetan"
     ports:
       - "54320:5432"
     volumes:
-      - longshot:/var/lib/postgresql/data
+      - cajetan:/var/lib/postgresql/data
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 volumes:
-  longshot:
+  cajetan:
