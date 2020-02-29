@@ -49,7 +49,7 @@ CREATE TABLE team_search_term (
   UNIQUE(team_id, term)
 );
 
-create or replace view elo_outcome(elo_predicted_outcome, even_elo, elo_diff, matchup_id, elo_team_a, elo_team_b) as
+CREATE OR REPLACE VIEW AS
 SELECT t.team_a_score > t.team_b_score AND t.elo_team_a > t.elo_team_b OR
        t.team_b_score > t.team_a_score AND t.elo_team_b > t.elo_team_a AS elo_predicted_outcome,
        t.elo_team_a = t.elo_team_b                                     AS even_elo,
@@ -87,5 +87,17 @@ FROM (SELECT matchup.id     AS matchup_id,
       ORDER BY matchup.start_time) t
 ORDER BY (abs(t.elo_team_a - t.elo_team_b)) DESC;
 
-alter table elo_outcome owner to postgres;
+CREATE OR REPLACE VIEW moneyline_probability AS
+SELECT id AS odds_id, matchup_id,
+       CASE
+           WHEN team_a_moneyline > 0 THEN (100 / (team_a_moneyline + 100))
+           ELSE (team_a_moneyline / (team_a_moneyline + 100))
+           END AS team_a_probability,
+       CASE
+           WHEN team_b_moneyline > 0 THEN (100 / (team_b_moneyline + 100))
+           ELSE (team_b_moneyline / (team_b_moneyline + 100))
+           END AS team_b_probability
+FROM odds WHERE team_a_moneyline IS NOT NULL and team_b_moneyline IS NOT NULL;
 
+ALTER TABLE elo_outcome OWNER TO postgres;
+ALTER TABLE moneyline_probability OWNER TO postgres;
