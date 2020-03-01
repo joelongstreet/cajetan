@@ -53,7 +53,7 @@ CREATE OR REPLACE VIEW AS
 SELECT t.team_a_score > t.team_b_score AND t.elo_team_a > t.elo_team_b OR
        t.team_b_score > t.team_a_score AND t.elo_team_b > t.elo_team_a AS elo_predicted_outcome,
        t.elo_team_a = t.elo_team_b                                     AS even_elo,
-       abs(t.elo_team_a - t.elo_team_b)                                AS elo_diff,
+       ABS(t.elo_team_a - t.elo_team_b)                                AS elo_diff,
        t.matchup_id,
        t.elo_team_a,
        t.elo_team_b
@@ -87,17 +87,25 @@ FROM (SELECT matchup.id     AS matchup_id,
       ORDER BY matchup.start_time) t
 ORDER BY (abs(t.elo_team_a - t.elo_team_b)) DESC;
 
-CREATE OR REPLACE VIEW moneyline_probability AS
-SELECT id AS odds_id, matchup_id,
+CREATE OR REPLACE VIEW moneyline_probability(odds_id, matchup_id, team_a_probability, team_b_probability) AS
+SELECT odds.id AS odds_id,
+       odds.matchup_id,
        CASE
-           WHEN team_a_moneyline > 0 THEN (100 / (team_a_moneyline + 100))
-           ELSE (team_a_moneyline / (team_a_moneyline + 100))
-           END AS team_a_probability,
+           WHEN (odds.team_a_moneyline > 0)
+               THEN 100 / (odds.team_a_moneyline::float + 100)
+           ELSE
+               ABS(odds.team_a_moneyline::float) / (ABS(odds.team_a_moneyline)::float + 100)
+           END
+               AS team_a_probability,
        CASE
-           WHEN team_b_moneyline > 0 THEN (100 / (team_b_moneyline + 100))
-           ELSE (team_b_moneyline / (team_b_moneyline + 100))
+           WHEN (odds.team_b_moneyline > 0)
+               THEN 100 / (odds.team_b_moneyline::float + 100)
+           ELSE
+               ABS(odds.team_b_moneyline::float) / (ABS(odds.team_b_moneyline)::float + 100)
            END AS team_b_probability
-FROM odds WHERE team_a_moneyline IS NOT NULL and team_b_moneyline IS NOT NULL;
+FROM odds
+WHERE odds.team_a_moneyline IS NOT NULL
+  AND odds.team_b_moneyline IS NOT NULL;
 
 ALTER TABLE elo_outcome OWNER TO postgres;
 ALTER TABLE moneyline_probability OWNER TO postgres;
