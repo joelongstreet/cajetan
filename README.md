@@ -1,6 +1,10 @@
 # Cajetan
 Predictive analytics for professional American sports
 
+<a href="https://en.wikipedia.org/wiki/Saint_Cajetan" title="blank">
+  <img src="https://f7hnjran9v-flywheel.netdna-ssl.com/wp-content/uploads/2019/07/Tiepolo_-_S%C3%A3o_Caetano_de_Tiene_2.jpg" width="200" alt="St. Cajetan" title="St. Cajetan">
+</a>
+
 
 ## Getting Started
 * Dependencies: [node](https://nodejs.org/en/), [docker](https://www.docker.com/), [make](https://www.gnu.org/software/make/manual/make.html).
