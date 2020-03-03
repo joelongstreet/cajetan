@@ -49,11 +49,14 @@ CREATE TABLE team_search_term (
   UNIQUE(team_id, term)
 );
 
-CREATE OR REPLACE VIEW elo_outcome(elo_predicted_outcome, even_elo, elo_diff, elo_probability, matchup_id, elo_team_a, elo_team_b) AS
-SELECT t.team_a_score > t.team_b_score AND t.elo_team_a > t.elo_team_b OR
+CREATE OR REPLACE VIEW elo_matchup_probability(matchup_id, elo_predicted_outcome, even_elo, elo_diff, elo_team_a, elo_team_b, elo_implied_probability) AS
+SELECT t.matchup_id,
+       t.team_a_score > t.team_b_score AND t.elo_team_a > t.elo_team_b OR
        t.team_b_score > t.team_a_score AND t.elo_team_b > t.elo_team_a AS elo_predicted_outcome,
        t.elo_team_a = t.elo_team_b                                     AS even_elo,
        ABS(t.elo_team_a - t.elo_team_b)                                AS elo_diff,
+       t.elo_team_a,
+       t.elo_team_b,
        CASE
            WHEN abs(t.elo_team_a - t.elo_team_b) >= 350 THEN 0.952
            WHEN abs(t.elo_team_a - t.elo_team_b) >= 300 AND abs(t.elo_team_a - t.elo_team_b) < 350 THEN 0.878
@@ -64,10 +67,7 @@ SELECT t.team_a_score > t.team_b_score AND t.elo_team_a > t.elo_team_b OR
            WHEN abs(t.elo_team_a - t.elo_team_b) >= 50  AND abs(t.elo_team_a - t.elo_team_b) < 100 THEN 0.594
            WHEN abs(t.elo_team_a - t.elo_team_b) >= 0   AND abs(t.elo_team_a - t.elo_team_b) < 50  THEN 0.506
            ELSE 0.0
-       END AS elo_probability,
-       t.matchup_id,
-       t.elo_team_a,
-       t.elo_team_b
+        END AS elo_implied_probability
 FROM (SELECT matchup.id     AS matchup_id,
              matchup.team_a_score,
              matchup.team_b_score,
@@ -98,25 +98,48 @@ FROM (SELECT matchup.id     AS matchup_id,
       ORDER BY matchup.start_time) t
 ORDER BY (abs(t.elo_team_a - t.elo_team_b)) DESC;
 
-CREATE OR REPLACE VIEW moneyline_probability(odds_id, matchup_id, team_a_probability, team_b_probability) AS
-SELECT odds.id AS odds_id,
-       odds.matchup_id,
+CREATE OR REPLACE VIEW moneyline_probability(matchup_id, odds_id, moneyline_predicted_outcome, team_a_implied_probability, team_b_implied_probability) AS
+SELECT odds.matchup_id,
+       odds.id AS odds_id,
+       matchup.team_a_score > matchup.team_b_score AND odds.team_a_moneyline < odds.team_b_moneyline OR
+       matchup.team_b_score > matchup.team_a_score AND odds.team_b_moneyline < odds.team_a_moneyline AS moneyline_predicted_outcome,
        CASE
            WHEN (odds.team_a_moneyline > 0)
                THEN 100 / (odds.team_a_moneyline::float + 100)
            ELSE
                ABS(odds.team_a_moneyline::float) / (ABS(odds.team_a_moneyline)::float + 100)
            END
-               AS team_a_probability,
+               AS team_a_implied_probability,
        CASE
            WHEN (odds.team_b_moneyline > 0)
                THEN 100 / (odds.team_b_moneyline::float + 100)
            ELSE
                ABS(odds.team_b_moneyline::float) / (ABS(odds.team_b_moneyline)::float + 100)
-           END AS team_b_probability
+           END AS team_b_implied_probability
 FROM odds
+LEFT JOIN matchup on matchup.id = odds.matchup_id
 WHERE odds.team_a_moneyline IS NOT NULL
   AND odds.team_b_moneyline IS NOT NULL;
 
-ALTER TABLE elo_outcome OWNER TO postgres;
-ALTER TABLE moneyline_probability OWNER TO postgres;
+CREATE OR REPLACE VIEW moneyline_matchup_probability(matchup_id, odds_id, moneyline_predicted_outcome, team_a_implied_probability, team_b_implied_probability) AS
+SELECT matchup.id as matchup_id,
+       o.id AS odds_id,
+       o.moneyline_predicted_outcome,
+       o.team_a_implied_probability,
+       o.team_b_implied_probability
+FROM matchup
+LEFT JOIN LATERAL (
+    SELECT odds.id,
+           odds.matchup_id,
+           moneyline_probability.moneyline_predicted_outcome,
+           moneyline_probability.team_a_implied_probability,
+           moneyline_probability.team_b_implied_probability
+    FROM odds
+             LEFT JOIN moneyline_probability ON moneyline_probability.odds_id = odds.id
+    WHERE odds.as_of < matchup.start_time AND odds.matchup_id = matchup.id
+    ORDER BY odds.as_of DESC
+    LIMIT 1
+) o ON matchup.id = o.matchup_id
+WHERE o.id IS NOT NULL
+  AND team_a_implied_probability IS NOT NULL
+  AND team_b_implied_probability IS NOT NULL;
