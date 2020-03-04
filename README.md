@@ -7,7 +7,7 @@ Predictive analytics for professional American sports
 
 
 ## Getting Started
-* Dependencies: [node](https://nodejs.org/en/), [docker](https://www.docker.com/), [make](https://www.gnu.org/software/make/manual/make.html).
+* Dependencies: [node](https://nodejs.org/en/), [docker](https://www.docker.com/), [make](https://www.gnu.org/software/make/manual/make.html), [python](https://www.python.org/downloads/), [pipenv](https://pipenv.readthedocs.io/en/latest/)
 * `make init`: Installs dependencies. Migrates and seeds the database.
 
 
