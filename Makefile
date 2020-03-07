@@ -1,12 +1,12 @@
 init:
 	docker-compose up -d $(ARG)
-	npm install
-	docker exec -i cajetan psql -U postgres -e < migrate.sql
-	docker exec -i cajetan psql -U postgres -e < seed.sql
-	node lib/tasks/seed-matchups
-	node lib/tasks/seed-matchups-times
-	node lib/tasks/seed-elo
-	node lib/tasks/seed-odds
+	cd seeder && npm install
+	docker exec -i cajetan psql -U postgres -e < seeder/migrate.sql
+	docker exec -i cajetan psql -U postgres -e < seeder/seed.sql
+	node seeder/lib/tasks/seed-matchups
+	node seeder/lib/tasks/seed-matchups-times
+	node seeder/lib/tasks/seed-elo
+	node seeder/lib/tasks/seed-odds
 
 start:
 	docker-compose up -d $(ARG)
