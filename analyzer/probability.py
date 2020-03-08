@@ -30,8 +30,6 @@ def getProbabiltySetFromQuery(query):
   return {
     "range": independent_range,
     "probabilties": list(
-      list(
-        zip(*probabilties)
-      )[1]
-    )
+      zip(*probabilties)
+    )[1]
   }
