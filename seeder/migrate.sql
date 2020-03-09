@@ -49,25 +49,14 @@ CREATE TABLE team_search_term (
   UNIQUE(team_id, term)
 );
 
-CREATE OR REPLACE VIEW elo_matchup_probability(matchup_id, elo_predicted_outcome, even_elo, elo_diff, elo_team_a, elo_team_b, elo_implied_probability) AS
+CREATE OR REPLACE VIEW elo_matchup(matchup_id, elo_predicted_outcome, even_elo, elo_diff, elo_team_a, elo_team_b) AS
 SELECT t.matchup_id,
        t.team_a_score > t.team_b_score AND t.elo_team_a > t.elo_team_b OR
        t.team_b_score > t.team_a_score AND t.elo_team_b > t.elo_team_a AS elo_predicted_outcome,
        t.elo_team_a = t.elo_team_b                                     AS even_elo,
        ABS(t.elo_team_a - t.elo_team_b)                                AS elo_diff,
        t.elo_team_a,
-       t.elo_team_b,
-       CASE
-           WHEN abs(t.elo_team_a - t.elo_team_b) >= 350 THEN 0.952
-           WHEN abs(t.elo_team_a - t.elo_team_b) >= 300 AND abs(t.elo_team_a - t.elo_team_b) < 350 THEN 0.878
-           WHEN abs(t.elo_team_a - t.elo_team_b) >= 250 AND abs(t.elo_team_a - t.elo_team_b) < 300 THEN 0.802
-           WHEN abs(t.elo_team_a - t.elo_team_b) >= 200 AND abs(t.elo_team_a - t.elo_team_b) < 250 THEN 0.753
-           WHEN abs(t.elo_team_a - t.elo_team_b) >= 150 AND abs(t.elo_team_a - t.elo_team_b) < 200 THEN 0.722
-           WHEN abs(t.elo_team_a - t.elo_team_b) >= 100 AND abs(t.elo_team_a - t.elo_team_b) < 150 THEN 0.643
-           WHEN abs(t.elo_team_a - t.elo_team_b) >= 50  AND abs(t.elo_team_a - t.elo_team_b) < 100 THEN 0.594
-           WHEN abs(t.elo_team_a - t.elo_team_b) >= 0   AND abs(t.elo_team_a - t.elo_team_b) < 50  THEN 0.506
-           ELSE 0.0
-        END AS elo_implied_probability
+       t.elo_team_b
 FROM (SELECT matchup.id     AS matchup_id,
              matchup.team_a_score,
              matchup.team_b_score,
