@@ -9,9 +9,10 @@ connection = psycopg2.connect(user=os.getenv("DB_USER"),
                               port=os.getenv("DB_PORT"),
                               database=os.getenv("DB_DATABASE"))
 
+
 def execute_sql(query):
-  cursor = connection.cursor()
-  cursor.execute(query)
-  results = cursor.fetchall()
-  cursor.close()
-  return results
+    cursor = connection.cursor()
+    cursor.execute(query)
+    results = cursor.fetchall()
+    cursor.close()
+    return results

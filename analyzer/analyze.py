@@ -6,18 +6,20 @@ import pg_client
 import probability
 
 
-base_elo_query            = sql_queries.queries["basic"]
-base_elo_probability_set  = probability.getProbabiltySetFromQuery(base_elo_query)
-base_elo_result_set       = pg_client.execute_sql(base_elo_query)
+base_elo_query = sql_queries.queries["basic"]
+base_elo_probability_set = probability.getProbabiltySetFromQuery(
+  base_elo_query
+)
+base_elo_result_set = pg_client.execute_sql(base_elo_query)
 
-line_plot_data_frame      = pd.DataFrame({
-  'ELO'         : base_elo_probability_set["range"],
-  'Probability' : base_elo_probability_set["probabilties"]
+line_plot_data_frame = pd.DataFrame({
+  'ELO': base_elo_probability_set["range"],
+  'Probability': base_elo_probability_set["probabilties"]
 })
 
-lm_plot_data_frame        = pd.DataFrame({
-  'ELO'         : list(zip(*base_elo_result_set))[1],
-  'Probability' : list(zip(*base_elo_result_set))[0]
+lm_plot_data_frame = pd.DataFrame({
+  'ELO': list(zip(*base_elo_result_set))[1],
+  'Probability': list(zip(*base_elo_result_set))[0]
 })
 
 line_plot = sns.lineplot(
