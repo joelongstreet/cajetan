@@ -1,9 +1,13 @@
+import os
 import psycopg2
+from dotenv import load_dotenv
 
-connection = psycopg2.connect(user="postgres",
-                              host="127.0.0.1",
-                              port="54320",
-                              database="postgres")
+load_dotenv()
+
+connection = psycopg2.connect(user=os.getenv("DB_USER"),
+                              host=os.getenv("DB_HOST"),
+                              port=os.getenv("DB_PORT"),
+                              database=os.getenv("DB_DATABASE"))
 
 def execute_sql(query):
   cursor = connection.cursor()

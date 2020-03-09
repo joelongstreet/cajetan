@@ -9,6 +9,7 @@ verify_ssl = true
 psycopg2 = "*"
 sklearn = "*"
 seaborn = "*"
+dotenv-python = "*"
 
 [requires]
 python_version = "3.7"

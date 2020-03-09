@@ -1,12 +1,15 @@
+require('dotenv').config({ path: '../.env' });
+
 const { Client }        = require('pg');
 
 const enableSqlLogging  = process.env.SQL_LOGGING;
+console.log(process.env)
 
 const client = new Client({
-  user:     'postgres',
-  host:     'localhost',
-  database: 'postgres',
-  port:     54320,
+  user:     process.env.DB_USER,
+  host:     process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  port:     process.env.DB_PORT,
 });
 
 client.connect();

@@ -1,8 +1,10 @@
+include .env
+
 init:
 	docker-compose up -d $(ARG)
 	cd seeder && npm install
-	docker exec -i cajetan psql -U postgres -e < seeder/migrate.sql
-	docker exec -i cajetan psql -U postgres -e < seeder/seed.sql
+	docker exec -i cajetan psql -U ${DB_USER} -e < seeder/migrate.sql
+	docker exec -i cajetan psql -U ${DB_USER} -e < seeder/seed.sql
 	node seeder/lib/tasks/seed-matchups
 	node seeder/lib/tasks/seed-matchups-times
 	node seeder/lib/tasks/seed-elo
