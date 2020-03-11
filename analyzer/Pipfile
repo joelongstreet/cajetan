@@ -9,9 +9,10 @@ verify_ssl = true
 seaborn = "*"
 sklearn = "*"
 pandas = "*"
-dotenv-python = "*"
 psycopg2-binary = "*"
 flake8 = "*"
+python-dotenv = "*"
+statsmodels = "*"
 
 [requires]
 python_version = "3.7"

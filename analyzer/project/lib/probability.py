@@ -1,10 +1,23 @@
 from sklearn.linear_model import LogisticRegression
 
 import numpy as np
-import pg_client
+import project.sql.pg_client as pg_client
 
 
-def getProbabiltySetFromQuery(query):
+def getIndependentRange(query):
+    sql_response = pg_client.execute_sql(query)
+    independent = list(
+      zip(*sql_response)
+    )[0]
+
+    independent_range = range(
+      -1 * max(independent), max(independent)
+    )
+
+    return independent_range
+
+
+def getProbabilties(query, independent_range):
     sql_response = pg_client.execute_sql(query)
     dependent, independent = zip(*sql_response)
 
@@ -17,10 +30,6 @@ def getProbabiltySetFromQuery(query):
       dependent
     )
 
-    independent_range = range(
-      -1 * max(independent), max(independent)
-    )
-
     probabilties = logistic_regression.predict_proba(
       np.reshape(
         independent_range,
@@ -28,9 +37,6 @@ def getProbabiltySetFromQuery(query):
       )
     )
 
-    return {
-      "range": independent_range,
-      "probabilties": list(
-        zip(*probabilties)
-      )[1]
-    }
+    return list(
+      zip(*probabilties)
+    )[1]
