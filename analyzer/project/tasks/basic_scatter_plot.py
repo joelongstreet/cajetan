@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
@@ -18,6 +19,8 @@ def execute():
       'Probability': list(zip(*result_set))[0],
     })
 
+    plt.figure(figsize=(12, 12))
+
     plot = sns.lmplot(
       x="ELO",
       y="value",
@@ -29,4 +32,4 @@ def execute():
       )
     )
 
-    plot.savefig("out/logistically-regress.png")
+    plot.savefig("out/basic-scatter-plot.png")
