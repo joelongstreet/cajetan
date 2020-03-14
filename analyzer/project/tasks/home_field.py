@@ -52,9 +52,6 @@ def execute():
       )
     )
 
-    plot.set(
-      xlabel="Elo difference betweent teams",
-      ylabel="Probability of predicting victory"
-    )
-
+    plot.set_xlabel("Elo Diff", fontsize=25)
+    plot.set_ylabel("Probability", fontsize=25)
     plot.get_figure().savefig("out/home-field.png")

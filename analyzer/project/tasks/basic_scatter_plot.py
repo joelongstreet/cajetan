@@ -26,7 +26,8 @@ def execute():
       y="value",
       y_jitter=.1,
       logistic=True,
-      scatter_kws={"s": 3},
+      size=12,
+      scatter_kws={"s": 10},
       data=pd.melt(
         data_frame, ['ELO']
       )
