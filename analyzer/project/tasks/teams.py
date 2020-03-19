@@ -15,11 +15,11 @@ query = {
 
 
 def execute():
-    independent_range = probability.getIndependentRange(
+    independent_range = probability.get_independent_range(
       query["independent_range"]
     )
 
-    matchup_probabilities = probability.getProbabilties(
+    matchup_probabilities = probability.get_logistic_regression_probabilties(
       query["elo_matchup"],
       independent_range
     )
@@ -33,9 +33,11 @@ def execute():
     team_monikers = list(zip(*team_moniker_result_set))[0]
 
     for moniker in team_monikers:
-        team_query = query["elo_matchup_where_moniker"].replace("[moniker]", moniker)
+        team_query = query["elo_matchup_where_moniker"].replace(
+          "[moniker]", moniker
+        )
 
-        data_frame_dictionary[moniker] = probability.getProbabilties(
+        data_frame_dictionary[moniker] = probability.get_logistic_regression_probabilties(
           team_query,
           independent_range
         )
