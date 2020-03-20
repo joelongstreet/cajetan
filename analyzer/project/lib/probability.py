@@ -14,7 +14,7 @@ def get_independent_range(query):
     )[0]
 
     independent_range = range(
-      min(independent), max(independent)
+      min(independent), max(independent) + 1
     )
 
     return independent_range

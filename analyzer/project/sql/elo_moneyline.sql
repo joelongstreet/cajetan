@@ -8,7 +8,6 @@ SELECT elo_diff, AVG(implied_probability) FROM (
   FROM moneyline_matchup_probability
     LEFT JOIN elo_matchup
       ON elo_matchup.matchup_id = moneyline_matchup_probability.matchup_id
-  WHERE moneyline_matchup_probability.moneyline_predicted_outcome = FALSE
 ) AS d
 GROUP BY elo_diff
 ORDER BY elo_diff DESC;
