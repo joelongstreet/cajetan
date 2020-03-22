@@ -100,12 +100,13 @@ def _fill_NaNs_with_linear_progression(lst):
         if(i > 0):
             previous_d = ret[i - 1]
 
-        next_d = d
+        next_d = previous_d
         next_d_index = i
         for j, _k in enumerate(ret, start=i+1):
-            dd = ret[j]
-            if np.isfinite(dd):
-                next_d = dd
+            if j >= len(lst):
+                break
+            if np.isfinite(ret[j]):
+                next_d = ret[j]
                 next_d_index = j
                 break
 
