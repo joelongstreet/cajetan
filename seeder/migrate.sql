@@ -49,8 +49,9 @@ CREATE TABLE team_search_term (
   UNIQUE(team_id, term)
 );
 
-CREATE OR REPLACE VIEW elo_matchup(matchup_id, elo_predicted_outcome, even_elo, elo_diff, elo_team_a, elo_team_b) AS
+CREATE OR REPLACE VIEW elo_matchup(matchup_id, league, elo_predicted_outcome, even_elo, elo_diff, elo_team_a, elo_team_b) AS
 SELECT t.matchup_id,
+       t.league,
        t.team_a_score > t.team_b_score AND t.elo_team_a > t.elo_team_b OR
        t.team_b_score > t.team_a_score AND t.elo_team_b > t.elo_team_a AS elo_predicted_outcome,
        t.elo_team_a = t.elo_team_b                                     AS even_elo,
@@ -58,6 +59,7 @@ SELECT t.matchup_id,
        t.elo_team_a,
        t.elo_team_b
 FROM (SELECT matchup.id     AS matchup_id,
+             elo_team_a.league,
              matchup.team_a_score,
              matchup.team_b_score,
              elo_team_a.elo AS elo_team_a,
@@ -68,8 +70,10 @@ FROM (SELECT matchup.id     AS matchup_id,
                LEFT JOIN LATERAL ( SELECT elo.id,
                                           elo.team_id,
                                           elo.as_of,
-                                          elo.elo
+                                          elo.elo,
+                                          team.league
                                    FROM elo
+                                   LEFT JOIN team ON team.id = elo.team_id
                                    WHERE elo.as_of < matchup.start_time
                                      AND elo.team_id = team_a.id
                                    ORDER BY elo.as_of DESC
@@ -87,9 +91,10 @@ FROM (SELECT matchup.id     AS matchup_id,
       ORDER BY matchup.start_time) t
 ORDER BY (abs(t.elo_team_a - t.elo_team_b)) DESC;
 
-CREATE OR REPLACE VIEW moneyline_probability(matchup_id, odds_id, moneyline_predicted_outcome, team_a_implied_probability, team_b_implied_probability) AS
+CREATE OR REPLACE VIEW moneyline_probability(matchup_id, odds_id, league, moneyline_predicted_outcome, team_a_implied_probability, team_b_implied_probability) AS
 SELECT odds.matchup_id,
        odds.id AS odds_id,
+       team.league,
        matchup.team_a_score > matchup.team_b_score AND odds.team_a_moneyline < odds.team_b_moneyline OR
        matchup.team_b_score > matchup.team_a_score AND odds.team_b_moneyline < odds.team_a_moneyline AS moneyline_predicted_outcome,
        CASE
@@ -106,13 +111,15 @@ SELECT odds.matchup_id,
                ABS(odds.team_b_moneyline::float) / (ABS(odds.team_b_moneyline)::float + 100)
            END AS team_b_implied_probability
 FROM odds
-LEFT JOIN matchup on matchup.id = odds.matchup_id
+LEFT JOIN matchup ON matchup.id = odds.matchup_id
+LEFT JOIN team ON team.id = matchup.team_a_id
 WHERE odds.team_a_moneyline IS NOT NULL
   AND odds.team_b_moneyline IS NOT NULL;
 
-CREATE OR REPLACE VIEW moneyline_matchup_probability(matchup_id, odds_id, moneyline_predicted_outcome, team_a_implied_probability, team_b_implied_probability) AS
+CREATE OR REPLACE VIEW moneyline_matchup_probability(matchup_id, odds_id, league, moneyline_predicted_outcome, team_a_implied_probability, team_b_implied_probability) AS
 SELECT matchup.id as matchup_id,
        o.id AS odds_id,
+       o.league,
        o.moneyline_predicted_outcome,
        o.team_a_implied_probability,
        o.team_b_implied_probability
@@ -120,6 +127,7 @@ FROM matchup
 LEFT JOIN LATERAL (
     SELECT odds.id,
            odds.matchup_id,
+           moneyline_probability.league,
            moneyline_probability.moneyline_predicted_outcome,
            moneyline_probability.team_a_implied_probability,
            moneyline_probability.team_b_implied_probability
