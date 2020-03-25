@@ -7,12 +7,27 @@ import project.sql as sql
 
 
 query = {
+  "league": sql.file("league"),
   "elo_matchup": sql.file("elo_matchup"),
 }
 
 
 def execute():
-    result_set = sql.pg_client.execute_sql(query["elo_matchup"])
+    leagues = sql.pg_client.execute_sql(
+      query["league"]
+    )[0][0].replace("{", "").replace("}", "").split(",")
+
+    for league in leagues:
+        _plot_and_draw(league)
+
+
+def _plot_and_draw(league):
+    result_set = sql.pg_client.execute_sql(
+      query["elo_matchup"],
+      {
+        'league': league
+      }
+    )
 
     data_frame = pd.DataFrame({
       'ELO': list(zip(*result_set))[1],
@@ -33,4 +48,4 @@ def execute():
       )
     )
 
-    plot.savefig("out/basic-scatter-plot.png")
+    plot.savefig("out/logistic-regression-%s.png" % league)

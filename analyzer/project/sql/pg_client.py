@@ -10,9 +10,13 @@ connection = psycopg2.connect(user=os.getenv("DB_USER"),
                               database=os.getenv("DB_DATABASE"))
 
 
-def execute_sql(query):
+def execute_sql(query, interpolation_args={}):
+    built_query = query.format(**interpolation_args)
+
+    print(built_query)
+
     cursor = connection.cursor()
-    cursor.execute(query)
+    cursor.execute(built_query)
     results = cursor.fetchall()
     cursor.close()
     return results
