@@ -37,9 +37,14 @@ def get_polynomnial_regression_probabilities(dependent_tuples, independent_tuple
     tuples = list(
       zip(dependent_tuples, independent_tuples)
     )
+
+    # trim the tuple set to remove the first 3 and last 3 elements
+    # prevents wild swinging of graph elements
+    trimmed_tuples = tuples[:len(tuples) - 3][3:]
+
     dependent = list(
       map(
-        lambda x: _fill_blanks_with_NaN(x, tuples), independent_range
+        lambda x: _fill_blanks_with_NaN(x, trimmed_tuples), independent_range
       )
     )
 
