@@ -1,4 +1,4 @@
-import project.sql.pg_client as pg_client
+import analyzer.sql.pg_client as pg_client
 
 
 def build_list_from_sql(base_query, interpolation_args={}):

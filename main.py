@@ -3,7 +3,7 @@ import sys
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from project.tasks import *
+from analyzer.tasks import *
 
 parser = argparse.ArgumentParser(
   description='Run analysis on ELO and Moneyline data'
@@ -20,7 +20,7 @@ parser.add_argument(
   '--task',
   required=True,
   action='append',
-  help='The tasks to run. Can be one or more files within analyzer/project/tasks. Specify multiple --task arguments to execute multiple tasks.'
+  help='The tasks to run. Can be one or more files within analyzer/tasks. Specify multiple --task arguments to execute multiple tasks.'
 )
 
 sns.set(font_scale=1.25)

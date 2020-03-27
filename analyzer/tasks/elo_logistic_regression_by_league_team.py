@@ -1,8 +1,8 @@
 import seaborn as sns
 import pandas as pd
-import project.sql as sql
-import project.lib.probability as probability
-import project.lib.util as util
+import analyzer.sql as sql
+import analyzer.lib.probability as probability
+import analyzer.lib.util as util
 
 
 query = {
