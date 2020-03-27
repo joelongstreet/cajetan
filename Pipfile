@@ -13,6 +13,7 @@ psycopg2-binary = "*"
 flake8 = "*"
 python-dotenv = "*"
 statsmodels = "*"
+argparse = "*"
 
 [requires]
 python_version = "3.7"

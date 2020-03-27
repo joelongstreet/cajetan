@@ -3,33 +3,22 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 
 import numpy as np
-import project.sql.pg_client as pg_client
 
 
-def get_independent_range(query):
-    sql_response = pg_client.execute_sql(query)
-    independent = list(
-      zip(*sql_response)
-    )[0]
-
+def get_independent_range(independent_list):
     independent_range = range(
-      min(independent), max(independent) + 1
+      min(independent_list), max(independent_list) + 1
     )
 
     return independent_range
 
 
-def get_logistic_regression_probabilties(query, independent_range):
-    sql_response = pg_client.execute_sql(query)
-    dependent, independent = zip(*sql_response)
-
+def get_logistic_regression_probabilties(dependent_list, independent_tuples, independent_range):
     logistic_regression = LogisticRegression(
       random_state=0
     ).fit(
-      list(
-        zip(independent)
-      ),
-      dependent
+      independent_tuples,
+      dependent_list
     )
 
     probabilties = logistic_regression.predict_proba(
@@ -44,11 +33,13 @@ def get_logistic_regression_probabilties(query, independent_range):
     )[1]
 
 
-def get_polynomnial_regression_probabilities(query, independent_range):
-    sql_response = pg_client.execute_sql(query)
+def get_polynomnial_regression_probabilities(dependent_tuples, independent_tuples, independent_range):
+    tuples = list(
+      zip(dependent_tuples, independent_tuples)
+    )
     dependent = list(
       map(
-        lambda x: _fill_blanks_with_NaN(x, sql_response), independent_range
+        lambda x: _fill_blanks_with_NaN(x, tuples), independent_range
       )
     )
 

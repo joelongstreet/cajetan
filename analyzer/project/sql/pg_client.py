@@ -10,7 +10,7 @@ connection = psycopg2.connect(user=os.getenv("DB_USER"),
                               database=os.getenv("DB_DATABASE"))
 
 
-def execute_sql(query, interpolation_args={}):
+def build_and_execute_sql(query, interpolation_args={}):
     built_query = query.format(**interpolation_args)
 
     print(built_query)

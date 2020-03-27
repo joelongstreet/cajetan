@@ -1,1 +1,4 @@
-SELECT moniker FROM team WHERE league = 'NFL' ORDER BY moniker ASC;
+SELECT moniker
+FROM team
+WHERE league IN ('{league}')
+ORDER BY moniker ASC;
