@@ -14,7 +14,7 @@ query = {
 
 
 def execute(league):
-    independent_range = util.build_list_from_sql(
+    independent_range = util.build_range_from_sql(
       query["independent_range"],
       {"league": league}
     )

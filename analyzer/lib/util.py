@@ -8,6 +8,13 @@ def build_list_from_sql(base_query, interpolation_args={}):
     )[0]
 
 
+def build_range_from_sql(base_query, interpolation_args={}):
+    lst = build_list_from_sql(base_query, interpolation_args)
+    return range(
+      min(lst), max(lst) + 1
+    )
+
+
 def build_list_and_tuples_from_sql(base_query, interpolation_args={}):
     response = _build_and_execute_sql(base_query, interpolation_args)
 

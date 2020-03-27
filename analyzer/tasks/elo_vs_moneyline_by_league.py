@@ -15,7 +15,7 @@ query = {
 
 
 def execute(league):
-    independent_range = util.build_list_from_sql(
+    independent_range = util.build_range_from_sql(
       query["independent_range"],
       {"league": league}
     )
@@ -61,5 +61,4 @@ def execute(league):
 
     plot.set_xlabel("Elo Diff", fontsize=25)
     plot.set_ylabel("Probability", fontsize=25)
-    plot.get_figure().savefig("out/home-field.png")
     plot.get_figure().savefig("out/elo-vs-moneyline-by-league-%s.png" % league)
