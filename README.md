@@ -11,6 +11,15 @@ Predictive analytics for professional American sports
 * `make init`: Installs dependencies. Migrates and seeds the database.
 
 
+## Analyze Commands
+Description | Command | Output
+:--- |:--- | :--- 
+ELO logistic regression by league | `pipenv run python main.py --league=NFL --task=elo_logistic_regression_by_league` | Faceted logistic regression graph for each passed league.
+ELO logistic regression by team in league  | `pipenv run python main.py --league=NFL --task=elo_logistic_regression_by_league_team` | Lineplot graph for each passed league. Line in lineplot graph for each team in league.
+ELO logistic regression by location of matchup in league | `pipenv run python main.py --league=NFL --task=elo_logistic_regression_by_league_location` | Lineplot graph for each passed league. Line in lineplot for home, away, and baseline regressions.
+ELO vs moneyline by league | `pipenv run python main.py --league=NFL --task=elo_vs_moneyline_by_league` | Lineplot comparing ELO logistic regression to moneyline polynomial regression.
+
+
 ## Database
 
 ### Tables and Views
