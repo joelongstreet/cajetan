@@ -25,11 +25,16 @@ def execute(league):
       y="value",
       y_jitter=.1,
       logistic=True,
-      size=12,
+      size=10,
       scatter_kws={"s": 10},
       data=pd.melt(
         data_frame, ['ELO']
       )
+    )
+
+    plot.set(
+      xlabel="Elo Diff",
+      ylabel="Probability"
     )
 
     plot.savefig("out/logistic-regression-%s.png" % league)

@@ -50,7 +50,7 @@ def get_polynomnial_regression_probabilities(dependent_tuples, independent_tuple
 
     progressive_dependent = _fill_NaNs_with_linear_progression(dependent)
 
-    polynomial_regression = PolynomialFeatures(degree=3)
+    polynomial_regression = PolynomialFeatures(degree=2)
     polynomial_fit = polynomial_regression.fit_transform(
       np.reshape(
         independent_range,

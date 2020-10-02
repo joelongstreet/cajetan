@@ -64,8 +64,8 @@ def execute(league):
     )
 
     plot.set(
-      xlabel="Elo difference between teams",
-      ylabel="Probability of predicting victory"
+      xlabel="Elo Diff",
+      ylabel="Probability"
     )
 
     plot.get_figure().savefig("out/logistic-regression-by-team-%s.png" % league)

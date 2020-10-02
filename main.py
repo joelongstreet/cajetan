@@ -23,20 +23,8 @@ parser.add_argument(
   help='The tasks to run. Can be one or more files within analyzer/tasks. Specify multiple --task arguments to execute multiple tasks.'
 )
 
-sns.set(font_scale=1.25)
-fig, ax = plt.subplots()
-plt.figure(figsize=(12, 12))
-
-sns.set_style("white", {
-  "font.sans-serif": [
-    "BalooChettan2-Regular.ttf", "Comic Sans", "Helvetica", "Arial"
-  ],
-  "axes.spines.left": False,
-  "axes.spines.bottom": False,
-  "axes.spines.right": False,
-  "axes.spines.top": False,
-})
-
+sns.set()
+plt.subplots(figsize=(10, 10))
 
 arguments = parser.parse_args()
 for league in arguments.league:

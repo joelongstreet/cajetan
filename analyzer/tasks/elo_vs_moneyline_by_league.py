@@ -50,15 +50,19 @@ def execute(league):
 
     data_frame = pd.DataFrame(data_frame_dictionary)
 
-    plot = sns.lineplot(
+    plot = sns.relplot(
       x="elo",
       y="value",
       hue="variable",
+      kind="line",
       data=pd.melt(
         data_frame, ['elo']
       )
     )
 
-    plot.set_xlabel("Elo Diff", fontsize=25)
-    plot.set_ylabel("Probability", fontsize=25)
-    plot.get_figure().savefig("out/elo-vs-moneyline-by-league-%s.png" % league)
+    plot.set(
+      xlabel="Elo Diff",
+      ylabel="Probability"
+    )
+
+    plot.savefig("out/elo-vs-moneyline-by-league-%s.png" % league)
