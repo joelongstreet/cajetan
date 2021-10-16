@@ -1,12 +1,14 @@
 version: "3"
 services:
   db:
-    image: "postgres:11"
+    image: "postgres:14"
     container_name: "cajetan"
     ports:
       - "${DB_PORT}:5432"
     volumes:
       - cajetan:/var/lib/postgresql/data
+      - ./seeder/migrate.sql:/docker-entrypoint-initdb.d/1_migrate.sql
+      - ./seeder/seed.sql:/docker-entrypoint-initdb.d/2_seed.sql
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
 volumes:
