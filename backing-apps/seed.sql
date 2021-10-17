@@ -155,6 +155,7 @@ INSERT INTO team_search_term (team_id, term) SELECT id, 'CAR'             FROM t
 INSERT INTO team_search_term (team_id, term) SELECT id, 'NE'              FROM team WHERE moniker = 'Patriots'        AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'NWE'             FROM team WHERE moniker = 'Patriots'        AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'OAK'             FROM team WHERE moniker = 'Raiders'         AND league = 'NFL' LIMIT 1;
+INSERT INTO team_search_term (team_id, term) SELECT id, 'LV'              FROM team WHERE moniker = 'Raiders'         AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'STL'             FROM team WHERE moniker = 'Rams'            AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'LA'              FROM team WHERE moniker = 'Rams'            AND league = 'NFL' LIMIT 1;
 INSERT INTO team_search_term (team_id, term) SELECT id, 'LAR'             FROM team WHERE moniker = 'Rams'            AND league = 'NFL' LIMIT 1;
