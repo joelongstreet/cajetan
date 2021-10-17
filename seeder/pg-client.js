@@ -1,9 +1,8 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 
 const { Client }        = require('pg');
 
 const enableSqlLogging  = process.env.SQL_LOGGING;
-console.log(process.env)
 
 const client = new Client({
   user:     process.env.DB_USER,

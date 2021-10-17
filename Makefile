@@ -5,10 +5,10 @@ init:
 
 seed:
 	cd seeder && npm install
-	node seeder/lib/tasks/seed-matchups
-	node seeder/lib/tasks/seed-matchups-times
-	node seeder/lib/tasks/seed-elo
-	node seeder/lib/tasks/seed-odds
+	node seeder/tasks/seed-matchups
+	node seeder/tasks/seed-matchups-times
+	node seeder/tasks/seed-elo
+	node seeder/tasks/seed-odds
 
 start:
 	docker-compose up -d $(ARG)
