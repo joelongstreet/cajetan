@@ -6,3 +6,4 @@ package-lock.json
 __pycache__
 Pipfile.lock
 out/*.png
+dump.sql
