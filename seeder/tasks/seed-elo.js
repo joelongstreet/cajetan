@@ -32,7 +32,6 @@ const leagueCsvUrls = [
   },
 ];
 
-
 async function fetchCsv(url) {
   return request(url)
     .catch((error) => {
@@ -40,7 +39,6 @@ async function fetchCsv(url) {
       return Promise.reject(err);
     });
 }
-
 
 async function buildSearchTermMap(league, teamTerms) {
   const uniqueTeamTerms = [...new Set(teamTerms)];
@@ -52,7 +50,6 @@ async function buildSearchTermMap(league, teamTerms) {
 
   return searchTermMap;
 }
-
 
 async function readFetchSeed({
   league, url, parseRow, getTeamTerms,
@@ -72,7 +69,6 @@ async function readFetchSeed({
   await Promise.all(insertReady.map(insertElo));
 }
 
-
 async function execute() {
   const tasks = leagueCsvUrls.map((leagueCsvUrl) => (
     // don't fail fast on promise.all
@@ -81,7 +77,6 @@ async function execute() {
 
   return Promise.all(tasks).catch(console.error);
 }
-
 
 execute().then(() => {
   const endTime  = new Date().getTime();

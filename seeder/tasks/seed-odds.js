@@ -120,7 +120,6 @@ async function parsePage({ matchupId, html, url }) {
   return Promise.allSettled(oddsData);
 }
 
-
 async function fetchParseSeed({ matchupId, oddsLink }) {
   const oddsMovementPageHtml  = await fetchHtml(oddsLink);
   const odds                  = await parsePage({ matchupId, html: oddsMovementPageHtml, url: oddsLink });
@@ -132,7 +131,6 @@ async function fetchParseSeed({ matchupId, oddsLink }) {
   console.log(`inserting ${oddsFulfilled.length} odds records...`);
   return Promise.all(oddsFulfilled.map(insertOdds));
 }
-
 
 async function execute() {
   const matchups      = await getMatchupsWithoutOddsRows(100);
@@ -151,7 +149,6 @@ async function execute() {
 
   if (oddsMatchups.length) await execute();
 }
-
 
 execute().then(() => {
   const endTime  = new Date().getTime();

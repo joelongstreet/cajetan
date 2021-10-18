@@ -11,7 +11,6 @@ const fromDateTimeFormat                      = 'LLLL dd, yyyy h:mm a';
 const defaulTimeZone                          = 'America/New_York';
 const startTime                               = new Date().getTime();
 
-
 function parsePage({ html, url, matchupId }) {
   console.log(`parsing matchup time data from ${url} for matchup ${matchupId}`);
 
@@ -34,7 +33,6 @@ function parsePage({ html, url, matchupId }) {
   return dateObject.toUTC().toISO();
 }
 
-
 async function fetchParseSeed({ matchupId, recapLink }) {
   console.log(`fetching matchup time data from ${recapLink}`);
 
@@ -51,7 +49,6 @@ async function fetchParseSeed({ matchupId, recapLink }) {
   Promise.resolve();
 }
 
-
 async function execute() {
   const matchups = await getMatchupsWithoutStartTimes(100);
 
@@ -65,7 +62,6 @@ async function execute() {
 
   if (matchups.length) await execute();
 }
-
 
 execute().then(() => {
   const endTime  = new Date().getTime();

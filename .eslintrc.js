@@ -20,6 +20,7 @@ module.exports = {
     'no-multi-spaces': 0,
     'newline-per-chained-call': 0,
     'no-await-in-loop': 0,
-    'no-restricted-syntax': 0
+    'no-restricted-syntax': 0,
+    'max-len': [2, 120, 2]
   },
 };

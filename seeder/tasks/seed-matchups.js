@@ -28,7 +28,6 @@ const leaguesMatchupsUrls           = [
   })(),
 ].flat();
 
-
 async function parsePage({ league, html, url }) {
   console.log(`parsing data for matchup from ${url}`);
 
@@ -101,7 +100,6 @@ async function parsePage({ league, html, url }) {
   return Promise.allSettled(promises);
 }
 
-
 async function fetchParseSeed({ league, matchupsUrl }) {
   console.log(`fetching data for matchup from ${matchupsUrl}`);
 
@@ -116,7 +114,6 @@ async function fetchParseSeed({ league, matchupsUrl }) {
   return Promise.all(matchupsFulfilled.map(insertMatchup));
 }
 
-
 async function execute() {
   for (const leagueMatchupsUrl of leaguesMatchupsUrls) {
     try {
@@ -126,7 +123,6 @@ async function execute() {
     }
   }
 }
-
 
 execute().then(() => {
   const endTime  = new Date().getTime();
