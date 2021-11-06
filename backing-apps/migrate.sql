@@ -26,7 +26,6 @@ CREATE TABLE matchup (
   team_a_is_home BOOLEAN,
   team_b_is_home BOOLEAN,
   odds_link VARCHAR(255),
-  recap_link VARCHAR(255),
   fetched_from VARCHAR(255),
   UNIQUE(start_time, team_a_id, team_b_id)
 );

@@ -6,7 +6,6 @@ init:
 seed:
 	cd seeder && npm install
 	node seeder/tasks/seed-matchups
-	node seeder/tasks/seed-matchups-times
 	node seeder/tasks/seed-elo
 	node seeder/tasks/seed-odds
 

@@ -1,6 +1,6 @@
 const { Model } = require('./model');
 
-const Matchup     = new Model({ tableName: 'matchup' });
+const Matchup   = new Model({ tableName: 'matchup' });
 
 async function getById(id) {
   const sql = `SELECT * FROM matchup where id = ${id};`;
@@ -11,11 +11,11 @@ async function getById(id) {
 
 async function insert({
   teamAId, teamBId, teamAScore, teamBScore,
-  teamAIsHome, teamBIsHome, oddsLink, recapLink, fetchedFrom,
+  teamAIsHome, teamBIsHome, oddsLink, fetchedFrom,
 }) {
   const err = new Error(`Insert error ${teamAId} | ${teamBId}`);
-  const sql = `INSERT INTO matchup (team_a_id, team_b_id, team_a_score, team_b_score, team_a_is_home, team_b_is_home, odds_link, recap_link, fetched_from)
-              VALUES (${teamAId}, ${teamBId}, ${teamAScore}, ${teamBScore}, ${teamAIsHome}, ${teamBIsHome}, '${oddsLink}', '${recapLink}', '${fetchedFrom}')
+  const sql = `INSERT INTO matchup (team_a_id, team_b_id, team_a_score, team_b_score, team_a_is_home, team_b_is_home, odds_link, fetched_from)
+              VALUES (${teamAId}, ${teamBId}, ${teamAScore}, ${teamBScore}, ${teamAIsHome}, ${teamBIsHome}, '${oddsLink}', '${fetchedFrom}')
               RETURNING *;`;
 
   const res = await Matchup.executeSql(sql, err);
@@ -43,37 +43,9 @@ async function getMatchupsWithoutOddsRows(limit = 100) {
   return res;
 }
 
-async function getMatchupsWithoutStartTimes(limit = 100) {
-  const err = new Error('No outstanding matchup rows');
-  const sql = `SELECT id, recap_link
-              FROM matchup
-              WHERE start_time is NULL
-              ORDER BY RANDOM()
-              LIMIT ${limit};`;
-
-  const res = await Matchup.executeSql(sql, err);
-
-  return res.map((r) => ({
-    matchupId: r.id,
-    recapLink: r.recap_link,
-  }));
-}
-
-async function updateStartTime({ matchupId, startTime }) {
-  const err = new Error('Could not update row');
-  const sql = `UPDATE matchup set start_time='${startTime}'
-              WHERE id=${matchupId}
-              RETURNING *;`;
-
-  const res = await Matchup.executeSql(sql, err);
-  return res;
-}
-
 module.exports = {
   insert,
   getById,
-  updateStartTime,
   getLeagueByMatchupId,
   getMatchupsWithoutOddsRows,
-  getMatchupsWithoutStartTimes,
 };

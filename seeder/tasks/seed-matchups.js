@@ -47,10 +47,7 @@ async function parsePage({ league, html, url }) {
     const teamBScore        = parseToFloatOrNull(rowB.find('td').eq(6).text().trim());
 
     const oddsMovementPart  = metaRow.find('a').eq(0).attr('href');
-    const recapUrlPart      = metaRow.find('a').eq(1).attr('href');
-
     const oddsLink          = oddsMovementPart ? `${baseUrl}${oddsMovementPart}` : null;
-    const recapLink         = recapUrlPart ? `${baseUrl}${recapUrlPart}` : null;
 
     return {
       teamATerm,
@@ -60,7 +57,6 @@ async function parsePage({ league, html, url }) {
       teamAIsHome,
       teamBIsHome,
       oddsLink,
-      recapLink,
       fetchedFrom: url,
     };
   }).get();
