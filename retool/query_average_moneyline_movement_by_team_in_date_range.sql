@@ -1,10 +1,12 @@
 SELECT
-  ROUND(AVG(movement)),
-  moniker 
+  ROUND(AVG(movement)) as average,
+  moniker,
+  odds_link
 FROM (
   SELECT
     odds.matchup_id,
     team.moniker,
+    matchup.odds_link,
     ABS(MIN(odds.team_a_moneyline) - MAX(odds.team_a_moneyline)) AS movement
   FROM odds
   LEFT JOIN matchup on odds.matchup_id = matchup.id
@@ -15,11 +17,13 @@ FROM (
     AND team.moniker IN ({{select_teams.value.map((d) => `'${d}'`).join(',')}})
   GROUP BY
     odds.matchup_id,
-    team.moniker
+    team.moniker,
+    matchup.odds_link
   UNION
   SELECT
     odds.matchup_id,
     team.moniker,
+    matchup.odds_link,
     ABS(MIN(odds.team_b_moneyline) - MAX(odds.team_b_moneyline)) AS movement
   FROM odds
   LEFT JOIN matchup on odds.matchup_id = matchup.id
@@ -30,6 +34,8 @@ FROM (
     AND team.moniker IN ({{select_teams.value.map((d) => `'${d}'`).join(',')}})
   GROUP BY
     odds.matchup_id,
-    team.moniker
+    team.moniker,
+    matchup.odds_link
 ) AS d
-GROUP BY moniker;
+GROUP BY moniker, odds_link
+ORDER BY average;

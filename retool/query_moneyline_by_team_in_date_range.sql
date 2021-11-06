@@ -1,7 +1,9 @@
 SELECT
   odds.as_of,
+  odds.matchup_id,
   team.moniker,
-  odds.team_a_moneyline
+  odds.team_a_moneyline,
+  matchup.odds_link
 FROM odds
 LEFT JOIN matchup on odds.matchup_id = matchup.id
 LEFT JOIN team on matchup.team_a_id = team.id
@@ -12,8 +14,10 @@ WHERE
 UNION
 SELECT
   odds.as_of,
+  odds.matchup_id,
   team.moniker,
-  odds.team_b_moneyline
+  odds.team_b_moneyline,
+  matchup.odds_link
 FROM odds
 LEFT JOIN matchup on odds.matchup_id = matchup.id
 LEFT JOIN team on matchup.team_b_id = team.id
