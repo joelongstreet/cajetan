@@ -10,12 +10,12 @@ async function getById(id) {
 }
 
 async function insert({
-  teamAId, teamBId, teamAScore, teamBScore,
+  startDate, teamAId, teamBId, teamAScore, teamBScore,
   teamAIsHome, teamBIsHome, oddsLink, fetchedFrom,
 }) {
   const err = new Error(`Insert error ${teamAId} | ${teamBId}`);
-  const sql = `INSERT INTO matchup (team_a_id, team_b_id, team_a_score, team_b_score, team_a_is_home, team_b_is_home, odds_link, fetched_from)
-              VALUES (${teamAId}, ${teamBId}, ${teamAScore}, ${teamBScore}, ${teamAIsHome}, ${teamBIsHome}, '${oddsLink}', '${fetchedFrom}')
+  const sql = `INSERT INTO matchup (start_date, team_a_id, team_b_id, team_a_score, team_b_score, team_a_is_home, team_b_is_home, odds_link, fetched_from)
+              VALUES ('${startDate}', ${teamAId}, ${teamBId}, ${teamAScore}, ${teamBScore}, ${teamAIsHome}, ${teamBIsHome}, '${oddsLink}', '${fetchedFrom}')
               RETURNING *;`;
 
   const res = await Matchup.executeSql(sql, err);

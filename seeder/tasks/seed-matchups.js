@@ -49,6 +49,8 @@ async function parsePage({ league, html, url }) {
     const oddsMovementPart  = metaRow.find('a').eq(0).attr('href');
     const oddsLink          = oddsMovementPart ? `${baseUrl}${oddsMovementPart}` : null;
 
+    const startDate         = oddsLink ? oddsLink.substr(oddsLink.lastIndexOf('/') + 1) : null;
+
     return {
       teamATerm,
       teamBTerm,
@@ -58,6 +60,7 @@ async function parsePage({ league, html, url }) {
       teamBIsHome,
       oddsLink,
       fetchedFrom: url,
+      startDate,
     };
   }).get();
 

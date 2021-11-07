@@ -18,7 +18,7 @@ CREATE TABLE elo (
 
 CREATE TABLE matchup (
   id SERIAL PRIMARY KEY,
-  start_time TIMESTAMP,
+  start_date DATE,
   team_a_id INTEGER REFERENCES team,
   team_b_id INTEGER REFERENCES team,
   team_a_score INTEGER NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE matchup (
   team_b_is_home BOOLEAN,
   odds_link VARCHAR(255),
   fetched_from VARCHAR(255),
-  UNIQUE(start_time, team_a_id, team_b_id)
+  UNIQUE(start_date, team_a_id, team_b_id)
 );
 
 CREATE TABLE odds (
@@ -73,7 +73,7 @@ FROM (SELECT matchup.id     AS matchup_id,
                                           team.league
                                    FROM elo
                                    LEFT JOIN team ON team.id = elo.team_id
-                                   WHERE elo.as_of < matchup.start_time
+                                   WHERE elo.as_of < matchup.start_date
                                      AND elo.team_id = team_a.id
                                    ORDER BY elo.as_of DESC
                                    LIMIT 1) elo_team_a ON elo_team_a.team_id = team_a.id
@@ -82,12 +82,12 @@ FROM (SELECT matchup.id     AS matchup_id,
                                           elo.as_of,
                                           elo.elo
                                    FROM elo
-                                   WHERE elo.as_of < matchup.start_time
+                                   WHERE elo.as_of < matchup.start_date
                                      AND elo.team_id = team_b.id
                                    ORDER BY elo.as_of DESC
                                    LIMIT 1) elo_team_b ON elo_team_b.team_id = team_b.id
-      WHERE matchup.start_time IS NOT NULL
-      ORDER BY matchup.start_time) t
+      WHERE matchup.start_date IS NOT NULL
+      ORDER BY matchup.start_date) t
 ORDER BY (abs(t.elo_team_a - t.elo_team_b)) DESC;
 
 CREATE OR REPLACE VIEW moneyline_probability(matchup_id, odds_id, league, moneyline_predicted_outcome, team_a_implied_probability, team_b_implied_probability) AS
@@ -132,7 +132,7 @@ LEFT JOIN LATERAL (
            moneyline_probability.team_b_implied_probability
     FROM odds
              LEFT JOIN moneyline_probability ON moneyline_probability.odds_id = odds.id
-    WHERE odds.as_of < matchup.start_time AND odds.matchup_id = matchup.id
+    WHERE odds.as_of < matchup.start_date AND odds.matchup_id = matchup.id
     ORDER BY odds.as_of DESC
     LIMIT 1
 ) o ON matchup.id = o.matchup_id
